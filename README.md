@@ -7,9 +7,8 @@ Inspiration and ideas by [creatuity/gatling_magento2](https://github.com/creatui
 ## IMPORTANT
 
 - The current version is _somehow_ developed for a project I am working on
-- There might be small and huge bugs, there might be totally wrong implementations
-- Ideas, improvements and pull requests welcome
-- I'm a Gatling & Scala newbie
+- There might be small and huge bugs, as well as totally wrong implementations (_I'm a Gatling & Scala newbie_)
+- Ideas, improvements and pull requests are welcome
 
 ### Requirements
 
@@ -60,11 +59,11 @@ Additionally, `JAVA_OPTS` passes settings to the simulation itself, using `-D[op
 
 `rampseconds` : The duration of the ramp time in seconds. Default is 30 seconds.
 
-`percentaddtocart` : Percent of users adding a product to cart. Happens when they visit a product or category page which has an add to cart form. Default is `30%`, configured as `30d`.
+`percentaddtocart` : Percent of users adding a product to cart. It happens when they visit a product or category page which has an add to cart form. Default is `30%`, configured as `30d`.
 
 `percentaddtocartskip` : Percent of users who will skip adding a product to cart, they will just continue browsing the site. Default is `70%`, configured as `70d`.
 
-`percentcheckoutguest` : Percent of users going through _Guest Checkout_. This percentage is from the total of users who added products to cart. **(Will be implemented soon)**
+`percentcheckoutguest` : Percent of users going through _Guest Checkout_. This percentage is from the total of users who added products to cart. **(Soo to be implemented)**
 
 ### ToDo
 
