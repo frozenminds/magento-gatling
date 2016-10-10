@@ -19,6 +19,6 @@ object Configuration {
   // simulates that addtocartskippercent will not add to cart,
   // only addtocartactionpercent will really add the product to cart.
   // IMPORTANT: addtocartactionpercent + addtocartskippercent <= 100%
-  val configAddToCartActionPercent = System.getProperty("percentaddtocart", "30d").toDouble
-  val configAddToCartSkipPercent = System.getProperty("percentaddtocartskip", "70d").toDouble
+  val configPercentCartAdd = System.getProperty("percentcartadd", "30d").toDouble
+  val configPercentCartSkip = System.getProperty("percentcartaddskip", "70d").toDouble
 }

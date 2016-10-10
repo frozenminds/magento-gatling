@@ -13,10 +13,11 @@ class MagentoSimulation extends Simulation {
   val feeder = sitemap("sitemap.xml").random
 
   val scn = scenario("Magento Simulation")
-  .exec(Scenario.scenario)
+    .exec(Browse.actionBrowse) // browse
+    .exec(CartAdd.actionCartAdd) // add to cart
+    .exec(Cart.actionCartBrowse) // goto cart page
 
-
-    setUp(scn.inject(nothingFor(1 seconds),
+  setUp(scn.inject(nothingFor(1 seconds),
     atOnceUsers(Configuration.configAtOnceUsers),
     rampUsers(Configuration.configRampUsers) over (Configuration.configRampSeconds seconds))).protocols(Http.httpConf)
 }
