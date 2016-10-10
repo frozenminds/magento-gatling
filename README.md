@@ -59,15 +59,14 @@ Additionally, `JAVA_OPTS` passes settings to the simulation itself, using `-D[op
 
 `rampseconds` : The duration of the ramp time in seconds. Default is 30 seconds.
 
-`percentaddtocart` : Percent of users adding a product to cart. It happens when they visit a product or category page which has an add to cart form. Default is `30%`, configured as `30d`.
+`percentcartadd` : Percent of users adding a product to cart. It happens when they visit a product or category page which has an add to cart form. Default is `30%`, configured as `30d`.
 
-`percentaddtocartskip` : Percent of users who will skip adding a product to cart, they will just continue browsing the site. Default is `70%`, configured as `70d`.
+`percentcartaddskip` : Percent of users who will skip adding a product to cart, they will just continue browsing the site. Default is `70%`, configured as `70d`.
 
 `percentcheckoutguest` : Percent of users going through _Guest Checkout_. This percentage is from the total of users who added products to cart. **(Soo to be implemented)**
 
 ### ToDo
 
-- Refactoring to move each step (browse, add to cart, checkout, etc.) into own `Object`
 - Implement Guest Checkout
 - Add more configuration options
 - Fetch static resources, just like any browser would
