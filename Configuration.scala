@@ -16,9 +16,9 @@ object Configuration {
   // ...over period (seconds)
   val configRampSeconds = Integer.getInteger("rampseconds", 120)
 
-  // simulates that addtocartskippercent will not add to cart,
-  // only addtocartactionpercent will really add the product to cart.
-  // IMPORTANT: addtocartactionpercent + addtocartskippercent <= 100%
+  // simulates that `percentcartaddskip` will not add to cart,
+  // only `percentcartadd` will really add the product to cart.
+  // IMPORTANT: percentcartadd + percentcartaddskip <= 100%
   val configPercentCartAdd = System.getProperty("percentcartadd", "30d").toDouble
   val configPercentCartSkip = System.getProperty("percentcartaddskip", "70d").toDouble
 }
