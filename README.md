@@ -63,7 +63,9 @@ Additionally, `JAVA_OPTS` passes settings to the simulation itself, using `-D[op
 
 `percentcartaddskip` : Percent of users who will skip adding a product to cart, they will just continue browsing the site. Default is `70%`, configured as `70d`.
 
-`percentcheckoutguest` : Percent of users going through _Guest Checkout_. This percentage is from the total of users who added products to cart. **(Soo to be implemented)**
+`percentcheckoutcomplete` : Percent of users going through the checkout process. It happens only if at least one product has been added to cart. Default is `50%`, configured as `50d`.
+
+`percentcheckoutskip` : Percent of users who will skip the checkout process, they will just continue browsing the site. Default is `50%`, configured as `50d`.
 
 ### ToDo
 

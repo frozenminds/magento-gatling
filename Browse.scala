@@ -20,5 +20,6 @@ object Browse {
         http("Browse Pages")
           .get("${loc}")
           .headers(Headers.headersGet)
-          .check(CartAdd.checksAddToCart: _*))
+          .check(Cart.checksCart: _*)
+          .check(CartAdd.checksCardAddForm: _*))
 }

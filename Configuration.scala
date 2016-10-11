@@ -21,4 +21,11 @@ object Configuration {
   // IMPORTANT: percentcartadd + percentcartaddskip <= 100%
   val configPercentCartAdd = System.getProperty("percentcartadd", "30d").toDouble
   val configPercentCartSkip = System.getProperty("percentcartaddskip", "70d").toDouble
+
+  // simulates that `percentcheckoutskip` will not go through the checkout,
+  // only `percentcheckoutcomplete` will attempt to complete it.
+  // IMPORTANT: percentcheckoutcomplete + percentcheckoutskip <= 100%
+  // IMPORTANT: this step will happen only if items have been added to cart.
+  val configPercentCheckoutComplete = System.getProperty("percentcheckoutcomplete", "50d").toDouble
+  val configPercentCheckoutSkip = System.getProperty("percentcheckoutskip", "50d").toDouble
 }

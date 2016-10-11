@@ -8,7 +8,7 @@ import scala.concurrent.duration._
 /** Add to cart checks */
 object CartAdd {
 
-  val checksAddToCart: Seq[HttpCheck] = Seq(
+  val checksCardAddForm: Seq[HttpCheck] = Seq(
     // Add to cart form action
     css("form[id^=product_addtocart_form]", "action").find.optional.saveAs("formAction"),
     // Add to cart form method (GET/POST)
@@ -27,98 +27,90 @@ object CartAdd {
   // Action add to cart
   val actionCartAdd = doIf("${formAction.exists()}") {
     randomSwitch(
-      Configuration.configPercentCartSkip -> pause(2 * Configuration.configRealtimeRatio seconds, 5 * Configuration.configRealtimeRatio seconds),
+      Configuration.configPercentCartSkip -> pause(1 * Configuration.configRealtimeRatio seconds, 5 * Configuration.configRealtimeRatio seconds),
       Configuration.configPercentCartAdd ->
-        // IF (form method = POST)
-        doIfEqualsOrElse(session => session("formMethod").as[String], "post") {
-          exec((session: Session) => {
-            val formAction = session("formAction")
-            val formKey = session("formKey")
-            val relatedProduct = session("relatedProduct")
 
-            val bundleParams = collection.mutable.Map.empty[String, String]
-            val configParams = collection.mutable.Map.empty[String, String]
-            val optionParams = collection.mutable.Map.empty[String, String]
+        exec((session: Session) => {
+          val formAction = session("formAction")
+          val formKey = session("formKey")
+          val relatedProduct = session("relatedProduct")
 
-            if (session.contains("bundleOptionSelectName") && session.contains("bundleOptionSelectValue")) {
+          val bundleParams = collection.mutable.Map.empty[String, String]
+          val configParams = collection.mutable.Map.empty[String, String]
+          val optionParams = collection.mutable.Map.empty[String, String]
 
-              val bundleOptionSelectNames = session("bundleOptionSelectName").as[Seq[String]]
-              val bundleOptionSelectValues = session("bundleOptionSelectValue").as[Seq[String]]
+          if (session.contains("bundleOptionSelectName") && session.contains("bundleOptionSelectValue")) {
 
-              val pattern = """(?s)(?<=bundle_option\[)([\d]+?)(?=\]\[\])""".r
+            val bundleOptionSelectNames = session("bundleOptionSelectName").as[Seq[String]]
+            val bundleOptionSelectValues = session("bundleOptionSelectValue").as[Seq[String]]
 
-              // build bundle options and qty maps
-              val bundleOption = collection.mutable.Map.empty[Int, List[Any]]
-              val bundleOptionQty = collection.mutable.Map.empty[Int, Map[Any, Int]]
+            val pattern = """(?s)(?<=bundle_option\[)([\d]+?)(?=\]\[\])""".r
 
-              val i = 0;
-              for (i <- 0 until bundleOptionSelectNames.length) {
+            // build bundle options and qty maps
+            val bundleOption = collection.mutable.Map.empty[Int, List[Any]]
+            val bundleOptionQty = collection.mutable.Map.empty[Int, Map[Any, Int]]
 
-                val option = pattern.findFirstIn(bundleOptionSelectNames(i)).get.toInt
+            val i = 0;
+            for (i <- 0 until bundleOptionSelectNames.length) {
 
-                val items = collection.mutable.ListBuffer[Any]()
-                if (bundleOption.contains(option)) {
-                  bundleOption.get(option).toList.head.copyToBuffer(items)
-                }
+              val option = pattern.findFirstIn(bundleOptionSelectNames(i)).get.toInt
 
-                items += bundleOptionSelectValues(i)
-
-                bundleOption += option -> items.toList
-
-                val qty = collection.mutable.Map.empty[Any, Int]
-                for (bundle <- items.toList) {
-                  qty += (bundle -> 1) // might want to add random qty
-                }
-
-                bundleOptionQty += option -> qty.toMap
+              val items = collection.mutable.ListBuffer[Any]()
+              if (bundleOption.contains(option)) {
+                bundleOption.get(option).toList.head.copyToBuffer(items)
               }
 
-              // build bundle_option params
-              for ((item, option) <- bundleOption) {
+              items += bundleOptionSelectValues(i)
 
-                var i = 0
-                for ((bundle) <- option) {
-                  bundleParams += s"bundle_option[$item][$i]" -> bundle.toString
+              bundleOption += option -> items.toList
 
-                  i += 1
-                }
+              val qty = collection.mutable.Map.empty[Any, Int]
+              for (bundle <- items.toList) {
+                qty += (bundle -> 1) // might want to add random qty
               }
 
-              // build bundle_option_qty params
-              for ((item, option) <- bundleOptionQty) {
-                for ((bundle, qty) <- option) {
-                  //bundleParams += s"bundle_option_qty[$item][$bundle]" -> qty.toString
-                }
-              }
-
+              bundleOptionQty += option -> qty.toMap
             }
 
-            session
-              .set("qty", 1) // you may use a random number
-              .set("bundleParams", bundleParams.toMap)
-              .set("configParams", configParams.toMap)
-              .set("optionParams", optionParams.toMap)
-              .set("relatedProduct", "")
-          })
-            .exec(
-              http("Add To Cart")
-                .post("/checkout/cart/add")
-                .headers(Headers.headersPost)
-                .formParam("form_key", "${formKey}")
-                .formParam("product", "${product}")
-                .formParam("qty", "${qty}")
-                .formParam("related_product", "${relatedProduct}")
-                .formParamMap("${bundleParams}")
-                .formParamMap("${configParams}")
-                .formParamMap("${optionParams}"))
-        } // ELSE (form method = GET)
-        {
-          exec(
-            http("Browse Pages")
-              .get("${formAction}")
-              .headers(Headers.headersGet))
+            // build bundle_option params
+            for ((item, option) <- bundleOption) {
+
+              var i = 0
+              for ((bundle) <- option) {
+                bundleParams += s"bundle_option[$item][$i]" -> bundle.toString
+
+                i += 1
+              }
+            }
+
+            // build bundle_option_qty params
+            for ((item, option) <- bundleOptionQty) {
+              for ((bundle, qty) <- option) {
+                //bundleParams += s"bundle_option_qty[$item][$bundle]" -> qty.toString
+              }
+            }
+
+          }
+
+          session
+            .set("qty", 1) // you may use a random number
+            .set("bundleParams", bundleParams.toMap)
+            .set("configParams", configParams.toMap)
+            .set("optionParams", optionParams.toMap)
+            .set("relatedProduct", "")
         })
+        .exec(
+          http("Add To Cart")
+            .post("/checkout/cart/add")
+            .headers(Headers.headersPost)
+            .formParam("form_key", "${formKey}")
+            .formParam("product", "${product}")
+            .formParam("qty", "${qty}")
+            .formParam("related_product", "${relatedProduct}")
+            .formParamMap("${bundleParams}")
+            .formParamMap("${configParams}")
+            .formParamMap("${optionParams}")))
       .exitHereIfFailed
-      .pause(2 * Configuration.configRealtimeRatio seconds, 10 * Configuration.configRealtimeRatio seconds)
+      .pause(1 * Configuration.configRealtimeRatio seconds, 5 * Configuration.configRealtimeRatio seconds)
   }
 }
