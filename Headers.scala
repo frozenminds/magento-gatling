@@ -9,16 +9,16 @@ import scala.concurrent.duration._
 /** HTTP headers object */
 object Headers {
 
-  // HTTP GET headers
+  // HTTP GET headers.
   val headersGet = Map(
     "Keep-Alive" -> "115")
 
-  // HTTP POST headers
+  // HTTP POST headers.
   val headersPost = Map(
     "Keep-Alive" -> "115",
     "Content-Type" -> "application/x-www-form-urlencoded")
 
-  // AJAX headers
+  // AJAX headers.
   val headersAjax = Map(
     "Accept" -> "application/json, text/javascript, */*; q=0.01",
     "Keep-Alive" -> "115",

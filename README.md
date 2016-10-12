@@ -53,11 +53,13 @@ Additionally, `JAVA_OPTS` passes settings to the simulation itself, using `-D[op
 
 `realtimeratio` : Realtime ratio for simulated user pauses between actions. 1 is for normal delays, 0 is no delays - this is used as a multiplier for pauses so you can actually use values such as 0.5 or 2, etc. Default is 1.
 
-`atonceusers` : The number of simulated users that spawn immediately (at once). Default is 1.
+`atonceusers` : The number of simulated users that spawn immediately (at once). Default is `1`.
 
-`rampusers` : The number of simulated users that spawn over the ramp time. Default is 10 users.
+`rampusers` : The number of simulated users that spawn over the ramp time. Default is `10` users.
 
-`rampseconds` : The duration of the ramp time in seconds. Default is 30 seconds.
+`rampseconds` : The duration of the ramp time in seconds. Default is `30` seconds.
+
+`itemsincart` : Number of items to be added to cart. Default is a random number between `1` and `5`.
 
 `percentcartadd` : Percent of users adding a product to cart. It happens when they visit a product or category page which has an add to cart form. Default is `30%`, configured as `30d`.
 
@@ -67,7 +69,7 @@ Additionally, `JAVA_OPTS` passes settings to the simulation itself, using `-D[op
 
 `percentcheckoutskip` : Percent of users who will skip the checkout process, they will just continue browsing the site. Default is `50%`, configured as `50d`.
 
-### ToDo
+### Todo
 
 - Implement Guest Checkout
 - Add more configuration options
