@@ -8,23 +8,24 @@ import scala.concurrent.duration._
 /** Cart object */
 object Cart {
 
-  // Cart checks
+  // Cart checks.
   val checksCart: Seq[HttpCheck] = Seq(
     // Cart in header
-    //css(".header-minicart .count").find.optional.saveAs("cartCount"),
+    css(".count").saveAs("cartCount"))
 
+  // Cart page checks.
+  val checksCartPage: Seq[HttpCheck] = Seq(
     // Shopping cart table
     css("table#shopping-cart-table").find.optional.saveAs("cartTable"))
 
-  // Action browse cart
-  val actionCartBrowse = exec(
-    http("Goto Cart")
-      .get("/checkout/cart")
-      .headers(Headers.headersGet)
-      .check(checksCart: _*))
-    .exitHereIfFailed
-    .pause(2 * Configuration.configRealtimeRatio seconds, 10 * Configuration.configRealtimeRatio seconds)
+  // Action browse cart.
+  val actionCartBrowse =
 
-  //.exec(flushSessionCookies)
-  //.exec(flushCookieJar)
+    exec(
+      http("Browse Cart")
+        .get("/checkout/cart")
+        .headers(Headers.headersGet)
+        .check(checksCart: _*)
+        .check(checksCartPage: _*))
+      .exitHereIfFailed
 }

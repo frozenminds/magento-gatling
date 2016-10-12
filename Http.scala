@@ -14,6 +14,6 @@ object Http {
     .acceptCharsetHeader("ISO-8859-1,utf-8;q=0.7,*;q=0.7")
     .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
     .acceptEncodingHeader("gzip, deflate, sdch")
-    .disableCaching
+    //.disableCaching
     //.inferHtmlResources
 }

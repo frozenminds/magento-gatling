@@ -10,15 +10,17 @@ import CartAdd._
 /** Browse object */
 object Browse {
 
-  // sitemap feeder
+  // Sitemap feeder.
   val feeder = sitemap("sitemap.xml").random
 
-  // Action browse website
+  // Action browse website.
   val actionBrowse =
     feed(feeder)
       .exec(
         http("Browse Pages")
           .get("${loc}")
           .headers(Headers.headersGet)
-          .check(CartAdd.checksAddToCart: _*))
+          .check(Cart.checksCart: _*)
+          .check(CartAdd.checksCardAddForm: _*))
+      .exitHereIfFailed
 }
